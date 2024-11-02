@@ -7,11 +7,13 @@ from typing import Dict, Any
 import os
 import json
 
+from fastapi.staticfiles import StaticFiles
+
 firebase_credentials = {
     "type": "service_account",
     "project_id": os.getenv("FIREBASE_PROJECT_ID"),
     "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID"),
-    "private_key": os.getenv("FIREBASE_PRIVATE_KEY").replace("\\n", "\n"),
+    "private_key" = (os.getenv("FIREBASE_PRIVATE_KEY_PART1", "") + os.getenv("FIREBASE_PRIVATE_KEY_PART2", "")).replace("\\n", "\n"),
     "client_email": os.getenv("FIREBASE_CLIENT_EMAIL"),
     "client_id": os.getenv("FIREBASE_CLIENT_ID"),
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
@@ -29,6 +31,9 @@ user_ref = db.collection("users")
 
 # Create a single FastAPI instance
 app = FastAPI()
+
+# Static files setup
+app.mount("/assets/profile_images", StaticFiles(directory="assets/profile_images"), name="profile_images")
 
 # Set up CORS middleware
 app.add_middleware(
