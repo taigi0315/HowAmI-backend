@@ -5,6 +5,7 @@ class User(BaseModel):
     id: str
     display_name: str
     profile_image: str
+    email: str
     working_on: List[str] = []
     interested_in: List[str] = []
     would_like_to_eat: List[str] = []
